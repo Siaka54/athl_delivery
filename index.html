@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATHL Livraison — Documentation technique MVP</title>
+<meta name="description" content="Architecture, infrastructure, sécurité & PCI et intégrations externes du MVP ATHL Livraison.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="topnav">
+  <a class="brand" href="#top">ATHL <span>Livraison</span></a>
+  <div class="nav-links" id="nav-links">
+    <a href="#contexte">Contexte</a>
+    <a href="#perimetre">Périmètre</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#infrastructure">Infrastructure</a>
+    <a href="#securite">Sécurité &amp; PCI</a>
+    <a href="#integrations">Intégrations</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <h1>ATHL <span>Livraison</span></h1>
+  <p class="subtitle">Documentation technique — MVP · Architecture · Infrastructure · Sécurité &amp; PCI · Intégrations</p>
+  <div class="badge-row">
+    <span class="badge">📍 Abidjan</span>
+    <span class="badge">🧑‍🤝‍🧑 1 Tech Lead + 1–2 développeurs</span>
+    <span class="badge">🚴 Pilote : 15 livreurs actifs</span>
+    <span class="badge">🎯 Objectif : fin du mois en cours</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===================== CONTEXTE ===================== -->
+  <section id="contexte">
+    <h2><span class="kicker">01</span> Contexte du projet</h2>
+    <p class="lede">
+      ATHL Livraison est une plateforme de livraison pour Abidjan. Le périmètre du MVP couvre
+      uniquement le <strong>module Livraison</strong> (application Client, application Livreur,
+      Back-office) — les modules VTC, location de véhicule et portail Marchand sont reportés à une
+      phase ultérieure.
+    </p>
+    <div class="card-grid">
+      <div class="card">
+        <h4><span class="icon">👥</span> Équipe</h4>
+        <p>Un Tech Lead accompagné de 1 à 2 développeurs.</p>
+      </div>
+      <div class="card">
+        <h4><span class="icon">🎯</span> Objectif de livraison</h4>
+        <p>Fin du mois en cours.</p>
+      </div>
+      <div class="card">
+        <h4><span class="icon">🚴</span> Phase pilote</h4>
+        <p>15 livreurs actifs.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PÉRIMÈTRE ===================== -->
+  <section id="perimetre">
+    <h2><span class="kicker">02</span> Périmètre fonctionnel — User Stories retenues</h2>
+    <p class="lede">
+      Sur l'ensemble des user stories du cahier des charges initial, celles listées ci-dessous sont
+      retenues pour ce MVP (numérotation reprise du document source).
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>ID</th><th>Epic</th><th>User Story</th><th>Priorité</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>US-001</td><td>Auth</td><td>Client : inscription par numéro de téléphone (OTP)</td><td><span class="pill p0">P0</span></td></tr>
+          <tr><td>US-002</td><td>Auth</td><td>Livreur : soumission du dossier d'inscription (CNI, permis, selfie)</td><td><span class="pill p0">P0</span></td></tr>
+          <tr><td>US-003</td><td>Commandes</td><td>Client : création d'une livraison (adresses, type, prix estimé)</td><td><span class="pill p0">P0</span></td></tr>
+          <tr><td>US-004</td><td>Commandes</td><td>Client : paiement Mobile Money (Orange / MTN / Wave)</td><td><span class="pill p0">P0</span></td></tr>
+          <tr><td>US-005</td><td>Tracking</td><td>Client : suivi de la livraison en temps réel</td><td><span class="pill p0">P0</span></td></tr>
+          <tr><td>US-006</td><td>Livreur</td><td>Réception et acceptation d'une mission</td><td><span class="pill p0">P0</span></td></tr>
+          <tr><td>US-007</td><td>Livreur</td><td>Validation de la livraison (code / QR, photo preuve)</td><td><span class="pill p0">P0</span></td></tr>
+          <tr><td>US-008</td><td>Back-Office</td><td>Carte temps réel des livreurs + affectation manuelle</td><td><span class="pill p0">P0</span></td></tr>
+          <tr><td>US-009</td><td>IA</td><td>Affectation automatique du livreur le plus proche</td><td><span class="pill p0">P0</span></td></tr>
+          <tr><td>US-010</td><td>Notation</td><td>Client : notation du livreur après livraison</td><td><span class="pill p1">P1</span></td></tr>
+          <tr><td>US-012</td><td>Back-Office</td><td>Gestion des incidents</td><td><span class="pill p1">P1</span></td></tr>
+          <tr><td>US-013</td><td>Livreur</td><td>Consultation des revenus</td><td><span class="pill p1">P1</span></td></tr>
+          <tr><td>US-014</td><td>Back-Office</td><td>Gestion des livreurs (validation des dossiers)</td><td><span class="pill p1">P1</span></td></tr>
+          <tr><td>US-023</td><td>Paiement Cash</td><td>Client : paiement en espèces à la livraison</td><td><span class="pill p0">P0</span></td></tr>
+          <tr><td>US-024</td><td>Paiement Cash</td><td>Admin : réconciliation des paiements espèces</td><td><span class="pill p1">P1</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="lede">
+      <strong>Hors périmètre</strong> pour ce MVP : portail Marchand (US-011, US-017), IA avancée de
+      groupage et heatmap (US-015, US-016), module VTC et location de véhicule (US-019 à US-022).
+    </p>
+  </section>
+
+  <!-- ===================== ARCHITECTURE ===================== -->
+  <section id="architecture">
+    <h2><span class="kicker">03</span> Architecture</h2>
+
+    <h3>Vue d'ensemble du stack applicatif</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Composant</th><th>Technologie</th></tr></thead>
+        <tbody>
+          <tr><td>Backend API</td><td>NestJS (Node.js / TypeScript) — architecture monolithe modulaire</td></tr>
+          <tr><td>Base de données</td><td>PostgreSQL, via l'ORM Prisma</td></tr>
+          <tr><td>Cache &amp; temps réel</td><td>Redis (pub/sub, sessions, cache, stockage des codes OTP)</td></tr>
+          <tr><td>Suivi temps réel</td><td>WebSocket (NestJS Gateway / Socket.IO) adossé à Redis</td></tr>
+          <tr><td>Back-office web</td><td>Angular</td></tr>
+          <tr><td>Application mobile</td><td>Flutter — un seul dépôt, deux variantes ("flavors") : Client et Livreur</td></tr>
+          <tr><td>Authentification</td><td>Vérification du numéro par code OTP (SMS) + session JWT</td></tr>
+          <tr><td>Notifications push</td><td>Firebase Cloud Messaging (FCM)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Schéma d'architecture</h3>
+    <div class="diagram">
+      <pre class="mermaid">
+flowchart LR
+  subgraph MOBILE["📱 Application mobile (Flutter)"]
+    CLIENT["App Client"]
+    LIVREUR["App Livreur"]
+  end
+  BO["🖥️ Back-office (Angular)"]
+
+  subgraph BACKEND["⚙️ API NestJS — monolithe modulaire"]
+    AUTH["Auth"]
+    CMD["Commandes"]
+    TRACK["Tracking"]
+    PAY["Paiements"]
+  end
+
+  PG[("PostgreSQL")]
+  REDIS[("Redis")]
+
+  MAPS["Google Maps Platform"]
+  MOMO["Wave / Orange Money / MTN MoMo"]
+  SMS["LeTexto (OTP SMS)"]
+  FCM["Firebase Cloud Messaging"]
+
+  CLIENT -- REST / WebSocket --> BACKEND
+  LIVREUR -- REST / WebSocket --> BACKEND
+  BO -- REST --> BACKEND
+
+  BACKEND --> PG
+  BACKEND --> REDIS
+  TRACK -. pub/sub .-> REDIS
+
+  CMD --> MAPS
+  PAY --> MOMO
+  AUTH --> SMS
+  BACKEND --> FCM
+      </pre>
+      <p class="caption">Apps Client / Livreur (Flutter) et Back-office (Angular) consomment la même API NestJS, adossée à PostgreSQL et Redis, et connectée aux services externes.</p>
+    </div>
+
+    <h3>Modules backend (NestJS)</h3>
+    <ul class="feature-list">
+      <li><strong>Auth</strong> — génération, envoi et vérification des codes OTP, émission des JWT</li>
+      <li><strong>Commandes</strong> — création, workflow de statuts, calcul du prix (distance, tarification)</li>
+      <li><strong>Tracking</strong> — canal WebSocket de suivi de position, diffusion via Redis</li>
+      <li><strong>Paiements</strong> — Mobile Money et paiement en espèces (COD)</li>
+    </ul>
+
+    <h3>Structure de l'application Flutter</h3>
+    <p>
+      Le code partagé entre les deux applications (réseau, WebSocket, modèles de données, gestion
+      d'état) est isolé dans un module commun, consommé par deux points d'entrée distincts :
+    </p>
+    <pre><code>lib/
+├── core/                 ← partagé (réseau, socket, modèles, état)
+├── features/
+│   ├── client/           ← écrans spécifiques Client
+│   └── livreur/          ← écrans spécifiques Livreur
+├── main_client.dart
+└── main_livreur.dart</code></pre>
+    <p>
+      Chaque flavor dispose de son propre identifiant d'application (applicationId / bundle ID), de
+      son propre fichier de configuration Firebase, et — côté Android — de son propre
+      AndroidManifest lorsque des permissions natives diffèrent (localisation en arrière-plan pour
+      l'app Livreur).
+    </p>
+  </section>
+
+  <!-- ===================== INFRASTRUCTURE ===================== -->
+  <section id="infrastructure">
+    <h2><span class="kicker">04</span> Infrastructure</h2>
+
+    <h3>Hébergement</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Serveur</th><th>Rôle</th><th>Caractéristiques</th></tr></thead>
+        <tbody>
+          <tr><td>VPS Démo</td><td>Démonstration + runner CI/CD</td><td>OVH VPS-2 — 4 vCores, 8 Go RAM, 75 Go SSD NVMe</td></tr>
+          <tr><td>VPS Production</td><td>API, base de données, temps réel</td><td>OVH VPS-2 — 4 vCores, 8 Go RAM, 75 Go SSD NVMe</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Les deux environnements sont identiques (parité démo/prod) pour éviter les écarts de
+      comportement entre les deux. Chaque serveur exécute l'ensemble des services via
+      <strong>Docker Compose</strong> (API NestJS, PostgreSQL, Redis, Nginx en reverse proxy avec
+      certificat Let's Encrypt).
+    </p>
+
+    <h3>Stockage des fichiers</h3>
+    <p>
+      Les fichiers utilisateur (pièces KYC des livreurs, preuves de livraison) sont stockés sur le
+      disque local du VPS pour la durée du MVP. Le passage vers une solution de stockage objet
+      externe est envisagé ultérieurement si le volume ou les besoins de fiabilité le justifient.
+    </p>
+
+    <h3>Sauvegardes</h3>
+    <ul class="feature-list">
+      <li><strong>Snapshot automatisé quotidien</strong> au niveau serveur (inclus avec l'offre OVH)</li>
+      <li><strong>Export applicatif quotidien</strong> de la base de données (pg_dump), en complément du snapshot, pour une restauration plus granulaire et portable</li>
+    </ul>
+
+    <h3>Intégration continue et déploiement (CI/CD)</h3>
+    <ul class="feature-list">
+      <li><strong>Plateforme</strong> — GitLab CI/CD (GitLab.com, SaaS, pas d'instance auto-hébergée)</li>
+      <li><strong>Runner</strong> — self-hosted, installé sur le VPS Démo (aucune limite de minutes de calcul, contrairement au quota du palier gratuit)</li>
+      <li><strong>Registre d'images</strong> — registre de conteneurs intégré à GitLab</li>
+      <li><strong>Déploiement</strong> — les builds (API, back-office, Android) s'exécutent sur le runner du VPS Démo ; le VPS Production ne fait que récupérer et démarrer les images (<code>docker compose pull &amp;&amp; up -d</code>), sans jamais compiler</li>
+      <li><strong>Build iOS</strong> — compilation et signature manuelles depuis un Mac (Xcode) ; non automatisées en CI pour le MVP</li>
+    </ul>
+
+    <h3>Schéma infrastructure &amp; CI/CD</h3>
+    <div class="diagram">
+      <pre class="mermaid">
+flowchart LR
+  DEV["Développeurs"] -- push --> GITLAB["GitLab.com CI/CD"]
+  GITLAB --> RUNNER["Runner self-hosted\n(VPS Démo)"]
+  RUNNER -- "build API / back-office / Android" --> REG["Registre GitLab\n(images Docker)"]
+  RUNNER --> DEMO["VPS Démo\n(Docker Compose)"]
+  REG -- "docker compose pull && up -d" --> PROD["VPS Production\n(Docker Compose)"]
+  DEV -. "build + signature manuels (Xcode)" .-> IOS["Google Play / distribution iOS"]
+
+  subgraph STACK[" "]
+    direction TB
+    API["API NestJS"]
+    PGD[("PostgreSQL")]
+    RD[("Redis")]
+    NGINX["Nginx + Let's Encrypt"]
+  end
+
+  PROD --- STACK
+  DEMO --- STACK
+      </pre>
+      <p class="caption">Le VPS Démo héberge le runner CI/CD et compile les images ; le VPS Production se contente de les récupérer et de les démarrer.</p>
+    </div>
+  </section>
+
+  <!-- ===================== SÉCURITÉ ===================== -->
+  <section id="securite">
+    <h2><span class="kicker">05</span> Sécurité &amp; PCI</h2>
+    <ul class="feature-list">
+      <li><strong>Aucun secret commité</strong> — keystore Android, clé de service Google Play, jeton API du fournisseur SMS : tous stockés comme variables CI/CD protégées et masquées</li>
+      <li><strong>Rate-limiting OTP</strong> — limitation du nombre de demandes par numéro et par fenêtre de temps, délai de renvoi, pour prévenir les abus et maîtriser le coût des SMS</li>
+      <li><strong>HTTPS</strong> — certificats Let's Encrypt sur les deux serveurs</li>
+      <li><strong>Double dispositif de sauvegarde</strong> — snapshot serveur + export applicatif de la base de données</li>
+    </ul>
+  </section>
+
+  <!-- ===================== INTÉGRATIONS ===================== -->
+  <section id="integrations">
+    <h2><span class="kicker">06</span> Intégrations API externes</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Service externe</th><th>Fournisseur</th><th>Usage</th></tr></thead>
+        <tbody>
+          <tr><td>Cartographie &amp; géolocalisation</td><td>Google Maps Platform</td><td>Autocomplete d'adresses, calcul de prix (Distance Matrix), itinéraire et estimation d'arrivée</td></tr>
+          <tr><td>Paiement Mobile Money</td><td>Wave, Orange Money CI, MTN MoMo</td><td>Paiement des commandes (intégration de Wave en priorité)</td></tr>
+          <tr><td>Vérification du numéro (OTP)</td><td>LeTexto</td><td>Envoi des codes de vérification par SMS</td></tr>
+          <tr><td>Notifications push</td><td>Firebase Cloud Messaging</td><td>Alertes de nouvelle commande, de mission assignée au livreur</td></tr>
+          <tr><td>Distribution des builds Android</td><td>Google Play Console (piste Internal testing)</td><td>Distribution des versions pilotes aux 15 livreurs et à l'équipe cliente</td></tr>
+          <tr><td>Dépôt de code, CI/CD, registre</td><td>GitLab</td><td>Hébergement du code, pipelines de build/test/déploiement, registre d'images Docker</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  ATHL Livraison — Documentation technique MVP · Généré à partir du document interne du projet.
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
