@@ -24,12 +24,6 @@
 <header class="hero" id="top">
   <h1>ATHL <span>Livraison</span></h1>
   <p class="subtitle">Documentation technique — MVP · Architecture · Infrastructure · Sécurité &amp; PCI · Intégrations</p>
-  <div class="badge-row">
-    <span class="badge">📍 Abidjan</span>
-    <span class="badge">🧑‍🤝‍🧑 1 Tech Lead + 1–2 développeurs</span>
-    <span class="badge">🚴 Pilote : 15 livreurs actifs</span>
-    <span class="badge">🎯 Objectif : fin du mois en cours</span>
-  </div>
 </header>
 
 <main>
@@ -168,24 +162,6 @@ flowchart LR
       <li><strong>Paiements</strong> — Mobile Money et paiement en espèces (COD)</li>
     </ul>
 
-    <h3>Structure de l'application Flutter</h3>
-    <p>
-      Le code partagé entre les deux applications (réseau, WebSocket, modèles de données, gestion
-      d'état) est isolé dans un module commun, consommé par deux points d'entrée distincts :
-    </p>
-    <pre><code>lib/
-├── core/                 ← partagé (réseau, socket, modèles, état)
-├── features/
-│   ├── client/           ← écrans spécifiques Client
-│   └── livreur/          ← écrans spécifiques Livreur
-├── main_client.dart
-└── main_livreur.dart</code></pre>
-    <p>
-      Chaque flavor dispose de son propre identifiant d'application (applicationId / bundle ID), de
-      son propre fichier de configuration Firebase, et — côté Android — de son propre
-      AndroidManifest lorsque des permissions natives diffèrent (localisation en arrière-plan pour
-      l'app Livreur).
-    </p>
   </section>
 
   <!-- ===================== INFRASTRUCTURE ===================== -->
